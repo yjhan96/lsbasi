@@ -1,6 +1,7 @@
-//Albert Han
-//lexer.h
-//Lexer tokenizes the string input and outputs tokens
+/* Albert Han
+ * lexer.h
+ * Lexer tokenizes the string input and outputs tokens
+ */
 #ifndef COMPILER_CPP_LEXER_H_
 #define COMPILER_CPP_LEXER_H_
 #include <string>

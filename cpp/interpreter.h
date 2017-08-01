@@ -22,6 +22,8 @@ class interpreter {
         void eat_(token_type type);
         // Gets the int value of int token
         int factor_();
+        int term_();
+        int expr_();
 };
 
 } // namespace comp

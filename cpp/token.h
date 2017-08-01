@@ -1,3 +1,10 @@
+/*
+ * Albert Han
+ * token.h
+ * Token is a class that represents the token during lexical analysis.
+ * Token types are represented in enum type.
+ */
+
 #ifndef COMPILER_CPP_TOKEN_H_
 #define COMPILER_CPP_TOKEN_H_
 #include <string>
@@ -12,17 +19,21 @@ enum token_type {
     MINUS,
     MULT,
     DIVS,
+    LPAREN,
+    RPAREN,
     EoF
 };
 
 static const char * token_strings[] = {"INIT", "INTEGER", "PLUS", "MINUS",
-                                       "EoF", "MULT", "DIVS"};
+                                       "MULT", "DIVS", "LPAREN", "RPAREN",
+                                       "EoF"};
 
 static const std::set<token_type> operations = {PLUS, MINUS, MULT, DIVS};
 
 class token {
     public:
         token_type type;
+        // String representation of token value
         std::string val;
 
         token() = default;

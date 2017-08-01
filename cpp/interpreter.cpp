@@ -2,10 +2,10 @@
 
 // uncomment to disable assert
 // #define NDEBUG
-#include <iostream>
 
 namespace comp {
 
+// Eats the token and updates the cur_token
 void interpreter::eat_(token_type type) {
     if (cur_token.type == type) {
         cur_token = lexer -> get_next_token();
@@ -14,46 +14,66 @@ void interpreter::eat_(token_type type) {
     }
 }
 
+/*
+ * START OF CONTEXT-FREE GRAMMARS
+ * 
+ * expr : term ( (PLUS | MINUS) term)*
+ * term : factor ( (MULT | DIVS) factor)*
+ * factor : INTEGER | LPAREN expr RPAREN
+ */
+
+// factor : INTEGER | LPAREN expr RPAREN
 int interpreter::factor_() {
-    token num_token = cur_token;
-    eat_(INTEGER);
-    return std::stoi(num_token.val);
+    if (cur_token.type == INTEGER) {
+        int res = std::stoi(cur_token.val);
+        eat_(INTEGER);
+        return res;
+    } else {
+        eat_(LPAREN);
+        int res = expr_();
+        eat_(RPAREN);
+        return res;
+    }
 }
 
-std::string interpreter::interpret() {
-/*
- * expr : factor ( (MUL | DIV) factor)*
- * factor : INTEGER
- */
+// term : factor ( (MULT | DIVS) factor)*
+int interpreter::term_() {
     int result = factor_();
-
-    while (operations.find(cur_token.type) != operations.end()) {
-        // ( (MUL | DIV) factor)*
-        token op = cur_token;
-
-        // We expect to get factor again
-        switch (op.type) {
-            case PLUS :
-                eat_(PLUS);
-                result += factor_();
-                break;
-            case MINUS :
-                eat_(MINUS);
-                result -= factor_();
-                break;
-            case MULT :
-                eat_(MULT);
-                result *= factor_();
-                break;
-            case DIVS :
-                eat_(DIVS);
-                result /= factor_();
-                break;
-            default :
-                throw std::invalid_argument( "op token type is not valid"); 
+    while (cur_token.type == MULT || cur_token.type == DIVS) {
+        if (cur_token.type == MULT) {
+            eat_(MULT);
+            result *= factor_();
+        } else {
+            eat_(DIVS);
+            result /= factor_();
         }
     }
-    return std::to_string(result);
+    return result;
+}
+
+// expr : term ( (PLUS | MINUS) term)*
+int interpreter::expr_() {
+    int result = term_();
+
+    while (cur_token.type == PLUS || cur_token.type == MINUS) {
+        if (cur_token.type == PLUS) {
+            eat_(PLUS);
+            result += term_();
+        } else {
+            eat_(MINUS);
+            result -= term_();
+        }
+    }
+    return result;
+}
+
+/*
+ * END OF CONTEXT-FREE GRAMMARS
+ */
+
+//returns the result of interpreter
+std::string interpreter::interpret() {
+    return std::to_string(expr_());
 }
 
 } //namespace comp

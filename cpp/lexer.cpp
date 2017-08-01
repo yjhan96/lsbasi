@@ -61,6 +61,14 @@ token Lexer::get_next_token() {
             s.push_back(text[pos]);
             result = token(DIVS, s);
             break;
+        case '(' :
+            s.push_back(text[pos]);
+            result = token(LPAREN, s);
+            break;
+        case ')' :
+            s.push_back(text[pos]);
+            result = token(RPAREN, s);
+            break;
         default:
             throw std::invalid_argument("Lexer: Unable to parse. Invalid Argument");
     }
