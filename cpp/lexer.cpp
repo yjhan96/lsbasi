@@ -28,46 +28,46 @@ std::string Lexer::get_int_string_() {
     return res;
 }
 
-token Lexer::get_next_token() {
+Token Lexer::get_next_token() {
     size_t n = text.size();
 
     skip_whitespace_();
 
     // If the position exceeds the string index, send EoF token
-    if (pos >= n) return token(EoF, "");
+    if (pos >= n) return Token(EoF, "");
 
     if (my_isdigit(text[pos])) {
         std::string s = get_int_string_();
-        token result = token(INTEGER, s);
+        Token result = Token(INTEGER, s);
         return result;
     }
 
     std::string s;
-    token result;
+    Token result;
     switch (text[pos]) {
         case '+' :
             s.push_back(text[pos]);
-            result = token(PLUS, s);
+            result = Token(PLUS, s);
             break;
         case '-' :
             s.push_back(text[pos]);
-            result = token(MINUS, s);
+            result = Token(MINUS, s);
             break;
         case '*' :
             s.push_back(text[pos]);
-            result = token(MULT, s);
+            result = Token(MULT, s);
             break;
         case '/' :
             s.push_back(text[pos]);
-            result = token(DIVS, s);
+            result = Token(DIVS, s);
             break;
         case '(' :
             s.push_back(text[pos]);
-            result = token(LPAREN, s);
+            result = Token(LPAREN, s);
             break;
         case ')' :
             s.push_back(text[pos]);
-            result = token(RPAREN, s);
+            result = Token(RPAREN, s);
             break;
         default:
             throw std::invalid_argument("Lexer: Unable to parse. Invalid Argument");

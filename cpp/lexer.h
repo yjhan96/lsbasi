@@ -16,7 +16,7 @@ class Lexer {
         Lexer() = default;
         Lexer(std::string text) :
             text(text), pos(0) {}
-        token get_next_token();
+        Token get_next_token();
     private:
         void skip_whitespace_();
         std::string get_int_string_();

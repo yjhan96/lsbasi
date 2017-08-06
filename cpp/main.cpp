@@ -9,7 +9,8 @@ int main()
     std::cout << "calc> ";
     while (std::getline(std::cin, s)) {
         comp::Lexer lexer(s);
-        comp::interpreter interp(&lexer);
+        comp::Parser parser(&lexer);
+        comp::Interpreter interp(&parser);
         std::cout << interp.interpret();
         std::cout << std::endl;
         std::cout << "calc> ";

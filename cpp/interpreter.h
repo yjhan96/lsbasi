@@ -4,26 +4,21 @@
 #include <string>
 
 #include "token.h"
-#include "lexer.h"
+#include "parser.h"
 
 namespace comp {
 
-class interpreter {
+class Interpreter {
     public:
-        token cur_token;
-        Lexer * lexer;
-        interpreter(Lexer * lex) {
-            lexer = lex;
-            cur_token = lexer -> get_next_token();
+        Parser * parser;
+        Interpreter(Parser * par) {
+            parser = par;
         }
         std::string interpret();
     private:
-        // Eats the current token and gets the next token
-        void eat_(token_type type);
-        // Gets the int value of int token
-        int factor_();
-        int term_();
-        int expr_();
+        int _eval_int_node(AST_t tree);
+        int _eval_op_node(AST_t tree);
+        int _eval_tree(AST_t tree);
 };
 
 } // namespace comp

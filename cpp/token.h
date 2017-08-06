@@ -30,14 +30,14 @@ static const char * token_strings[] = {"INIT", "INTEGER", "PLUS", "MINUS",
 
 static const std::set<token_type> operations = {PLUS, MINUS, MULT, DIVS};
 
-class token {
+class Token {
     public:
         token_type type;
         // String representation of token value
         std::string val;
 
-        token() = default;
-        token(token_type type, std::string s) :
+        Token() = default;
+        Token(token_type type, std::string s) :
             type(type), val(s) {}
         operator std::string();
 };

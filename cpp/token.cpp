@@ -1,7 +1,7 @@
 #include "token.h"
 namespace comp
 {
-    token::operator std::string() {
+    Token::operator std::string() {
         std::string result;
         result.push_back(type);
         result.append(", ");
