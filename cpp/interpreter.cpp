@@ -39,11 +39,30 @@ int Interpreter::_eval_op_node(AST_t tree) {
     }
 }
 
+int Interpreter::_eval_unary_node(AST_t tree) {
+    switch ((tree -> token).type) {
+        case PLUS :
+            return _eval_tree(tree -> left);
+            break;
+        case MINUS :
+            return -1 * _eval_tree(tree -> left);
+            break;
+        default :
+            throw std::invalid_argument("Interpreter: Invalid token type");
+    }
+}
+
 int Interpreter::_eval_tree(AST_t tree) {
-    if ( (tree->token).type == INTEGER) {
+    std::string type = tree -> get_id();
+    if (type == "Num") {
         return _eval_int_node(tree);
-    } else {
+    } else if (type == "UnaryOp") {
+        // There is only one child tree, which means it's unary.
+        return _eval_unary_node(tree);
+    } else if (type == "BinOp") {
         return _eval_op_node(tree);
+    } else {
+        throw std::invalid_argument("Interpreter: Invalid tree type");
     }
 }
 

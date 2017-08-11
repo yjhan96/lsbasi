@@ -21,11 +21,21 @@ void Parser::_eat(token_type type) {
  * Context-free Grammars
  * epxr : term ( (PLUS | MINUS) term)*
  * term : factor ( (MULT | DIVS) factor)*
- * factor : INTEGER | LPAREN expr RPAREN
+ * factor : (PLUS | MINUS) factor |  INTEGER | LPAREN expr RPAREN
  */
 
-// factor : INTEGER | LPAREN expr RPAREN
+// factor : (PLUS | MINUS) factor | INTEGER | LPAREN expr RPAREN
 AST_t Parser::_factor() {
+    if (cur_token.type == PLUS || cur_token.type == MINUS) {
+        Token token = cur_token;
+        if (cur_token.type == PLUS) {
+            _eat(PLUS);
+        } else {
+            _eat(MINUS);
+        }
+        AST_t res = new UnaryOp(token, _factor());
+        return res;
+    }
     if (cur_token.type == INTEGER) {
         AST_t res = new Num(cur_token);
         _eat(INTEGER);

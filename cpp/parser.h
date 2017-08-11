@@ -20,18 +20,28 @@ struct AST {
         AST() = default;
         AST(AST *l, Token t, AST *r) :
             token(t), left(l), right(r) {}
+        virtual std::string get_id() = 0;
 };
 typedef AST* AST_t;
 
 struct BinOp : AST {
     public:
         using AST::AST;
+        std::string get_id() {return "BinOp"; }
 };
 
 struct Num : AST {
     public:
         Num(Token t) :
             AST(NULL, t, NULL) {}
+        std::string get_id() {return "Num"; }
+};
+
+struct UnaryOp : AST {
+    public:
+        UnaryOp(Token t, AST *child) :
+            AST(child, t, NULL) {}
+        std::string get_id() {return "UnaryOp"; }
 };
 
 class Parser {
