@@ -71,11 +71,11 @@ AST_t Parser::_expr() {
     while (cur_token.type == PLUS || cur_token.type == MINUS) {
         if (cur_token.type == PLUS) {
             _eat(PLUS);
-            AST_t right = _factor();
+            AST_t right = _term();
             res = new BinOp(res, Token(PLUS, "+"), right); 
         } else {
             _eat(MINUS);
-            AST_t right = _factor();
+            AST_t right = _term();
             res = new BinOp(res, Token(MINUS, "-"), right);
         }
     }

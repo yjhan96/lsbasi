@@ -8,27 +8,32 @@
 #ifndef COMPILER_CPP_TOKEN_H_
 #define COMPILER_CPP_TOKEN_H_
 #include <string>
-#include <set>
 
 namespace comp {
 
 enum token_type {
     INIT,
+    //Integer type
     INTEGER,
-    PLUS,
-    MINUS,
-    MULT,
-    DIVS,
-    LPAREN,
-    RPAREN,
+    //Operator type
+    PLUS, MINUS, MULT, DIVS,
+    //Paren type
+    LPAREN, RPAREN,
+
+    BEGIN, END, DOT,
+
+    ID, ASSIGN, SEMI,
+    //Eof type
     EoF
 };
 
-static const char * token_strings[] = {"INIT", "INTEGER", "PLUS", "MINUS",
-                                       "MULT", "DIVS", "LPAREN", "RPAREN",
+static const char * token_strings[] = {"INIT", 
+                                       "INTEGER", 
+                                       "PLUS", "MINUS", "MULT", "DIVS", 
+                                       "LPAREN", "RPAREN",
+                                       "BEGIN", "END", "DOT",
+                                       "ID", "ASSIGN", "SEMI",
                                        "EoF"};
-
-static const std::set<token_type> operations = {PLUS, MINUS, MULT, DIVS};
 
 class Token {
     public:
