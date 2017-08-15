@@ -116,26 +116,26 @@ AST_t Parser::_variable() {
  *        | variable
  */
 AST_t Parser::_factor() {
-    if (cur_token.type == PLUS || cur_token.type == MINUS) {
+    AST_t res;
+    if (cur_token.type == PLUS) {
         Token token = cur_token;
-        if (cur_token.type == PLUS) {
-            _eat(PLUS);
-        } else {
-            _eat(MINUS);
-        }
-        AST_t res = new UnaryOp(token, _factor());
-        return res;
-    }
-    if (cur_token.type == INTEGER) {
-        AST_t res = new Num(cur_token);
+        _eat(PLUS);
+        res = new UnaryOp(token, _factor());
+    } else if (cur_token.type == MINUS) {
+        Token token = cur_token;
+        _eat(MINUS);
+        res = new UnaryOp(token, _factor());
+    } else if (cur_token.type == INTEGER) {
+        res = new Num(cur_token);
         _eat(INTEGER);
-        return res;
-    } else {
+    } else if (cur_token.type == LPAREN) {
         _eat(LPAREN);
-        AST_t res = _expr();
+        res = _expr();
         _eat(RPAREN);
-        return res;
+    } else {
+        res = _variable();
     }
+    return res;
 }
 
 // term : factor ( (MULT | DIVS) factor)*
@@ -177,7 +177,11 @@ AST_t Parser::_expr() {
  */
 
 AST_t Parser::parse() {
-    return _expr();
+    AST_t res = _program();
+    if (cur_token.type != EoF) {
+        throw std::invalid_argument("Parser: Last cur_token type not EoF");
+    }
+    return res;
 }
 
 } // namespace comp
