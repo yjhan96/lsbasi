@@ -16,9 +16,9 @@ class Interpreter {
         }
         std::string interpret();
     private:
-        int _eval_int_node(AST_t tree);
-        int _eval_op_node(AST_t tree);
-        int _eval_unary_node(AST_t tree);
+        int _eval_int_node(Num_t tree);
+        int _eval_op_node(BinOp_t tree);
+        int _eval_unary_node(UnaryOp_t tree);
         int _eval_tree(AST_t tree);
 };
 

@@ -1,4 +1,5 @@
 #include "../src/lexer.h"
+
 #include <string>
 #include <cassert>
 #include <iostream>
@@ -59,6 +60,8 @@ void lexer_test_3() {
 
     t = lex.get_next_token();
     assert(t.type == comp::DOT);
+
+    assert(comp::reserved_keywords.find("a") != comp::reserved_keywords.end());
 }
 
 int main() {

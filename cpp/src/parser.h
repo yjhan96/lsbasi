@@ -7,6 +7,7 @@
 #ifndef COMPILER_CPP_PARSER_H_
 #define COMPILER_CPP_PARSER_H_
 #include <string>
+#include <vector>
 
 #include "token.h"
 #include "lexer.h"
@@ -15,34 +16,73 @@ namespace comp {
 
 struct AST {
     public:
-        Token token;
-        AST * left, * right;
         AST() = default;
-        AST(AST *l, Token t, AST *r) :
-            token(t), left(l), right(r) {}
         virtual std::string get_id() = 0;
 };
 typedef AST* AST_t;
 
+struct Compound : AST {
+    public:
+        std::vector<AST_t> children;
+        Compound(std::vector<AST_t> nodes) :
+            children(nodes) {}
+        std::string get_id() { return "Compound"; }
+};
+typedef Compound* Compound_t;
+
+struct Assign : AST {
+    public:
+        Token token;
+        AST *left, *right;
+        Assign (AST *l, Token t, AST *r) :
+            token(t), left(l), right(r) {}
+        std::string get_id() { return "Assign"; }
+};
+typedef Assign* Assign_t;
+
+struct Var : AST {
+    Token token;
+    std::string val;
+    Var (Token t) : token(t) {
+        val = t.val;
+    }
+    std::string get_id() { return "Var"; }
+};
+typedef Var* Var_t;
+
+struct NoOp : AST {
+    NoOp() = default;
+    std::string get_id() { return "NoOp"; }
+};
+typedef NoOp* NoOp_t;
+
 struct BinOp : AST {
     public:
-        using AST::AST;
+        Token token;
+        AST *left, *right;
+        BinOp (AST *l, Token t, AST *r) :
+            token(t), left(l), right(r) {}
         std::string get_id() {return "BinOp"; }
 };
+typedef BinOp* BinOp_t;
 
 struct Num : AST {
     public:
-        Num(Token t) :
-            AST(NULL, t, NULL) {}
+        Token token;
+        Num (Token t) : token(t) {}
         std::string get_id() {return "Num"; }
 };
+typedef Num* Num_t;
 
 struct UnaryOp : AST {
     public:
+        Token token;
+        AST *child;
         UnaryOp(Token t, AST *child) :
-            AST(child, t, NULL) {}
+            token(t), child(child) {}
         std::string get_id() {return "UnaryOp"; }
 };
+typedef UnaryOp* UnaryOp_t;
 
 class Parser {
     public:
@@ -56,7 +96,13 @@ class Parser {
     private:
         // Eats the current token and gets the next token
         void _eat(token_type type);
-        // Gets the int value of int token
+        AST_t _program();
+        AST_t _compound_statement();
+        std::vector<AST_t> _statement_list();
+        AST_t _statement();
+        AST_t _assignment_statement();
+        AST_t _empty();
+        AST_t _variable();
         AST_t _factor();
         AST_t _term();
         AST_t _expr();

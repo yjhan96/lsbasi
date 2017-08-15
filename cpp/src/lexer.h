@@ -12,9 +12,7 @@
 namespace comp {
 
 typedef std::unordered_map<std::string, Token> keyword_map;
-static keyword_map reserved_keywords( { {"BEGIN", Token(BEGIN, "BEGIN")},
-                                        {"END", Token(END, "END")}
-                                      } );
+extern keyword_map reserved_keywords;
 
 class Lexer {
     public:

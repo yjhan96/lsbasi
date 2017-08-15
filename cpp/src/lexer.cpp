@@ -7,6 +7,10 @@
 
 namespace comp {
 
+keyword_map reserved_keywords( { {"BEGIN", Token(BEGIN, "BEGIN")},
+                                {"END", Token(END, "END")}
+                               } );
+
 // Helper function of isdigit to eliminate undefined behavior
 bool my_isdigit(char ch) {
     return std::isdigit(static_cast<unsigned char>(ch));

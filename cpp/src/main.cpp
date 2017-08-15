@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 
-#include "token.h"
 #include "interpreter.h"
 int main()
 {
