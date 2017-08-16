@@ -2,7 +2,10 @@
 //lexer.cpp
 //Lexer tokenizes the string input and outputs tokens
 #include "lexer.h"
+
+#include <algorithm>
 #include <cctype>
+#include <string>
 #include <iostream>
 
 namespace comp {
@@ -58,6 +61,7 @@ Token Lexer::_id() {
         ++end;
     }
     std::string res(text.begin() + pos, text.begin() + end);
+    std::transform(res.begin(), res.end(), res.begin(), ::toupper);
     _advance(end - pos);
     if (reserved_keywords.find(res) == reserved_keywords.end()) {
         reserved_keywords[res] = Token(ID, res);

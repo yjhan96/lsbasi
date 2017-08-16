@@ -12,7 +12,9 @@ void Parser::_eat(token_type type) {
     if (cur_token.type == type) {
         cur_token = lexer -> get_next_token();
     } else {
-        throw std::invalid_argument("Parser: Wrong token. caanot parse"); 
+        std::string statement("Parser: Wrong token. Cannot parse ");
+        statement += token_strings[type];
+        throw std::invalid_argument(statement);
     }
 }
 
