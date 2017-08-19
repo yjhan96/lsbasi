@@ -58,7 +58,7 @@ std::string Lexer::get_int_string_() {
 
 Token Lexer::_id() {
     size_t end = pos;
-    while (end < text.size() && my_isalnum(text[end])) {
+    while (end < text.size() && (text[end] == '_' || my_isalnum(text[end]))) {
         ++end;
     }
     std::string res(text.begin() + pos, text.begin() + end);
@@ -86,7 +86,7 @@ Token Lexer::get_next_token() {
     }
 
     // alphanumerical Tokens
-    if (my_isalpha(text[pos])) {
+    if (text[pos] == '_' || my_isalpha(text[pos])) {
         return _id();
     }
 
