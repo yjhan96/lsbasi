@@ -11,7 +11,8 @@
 namespace comp {
 
 keyword_map reserved_keywords( { {"BEGIN", Token(BEGIN, "BEGIN")},
-                                {"END", Token(END, "END")}
+                                {"END", Token(END, "END")},
+                                {"DIV", Token(DIVS, "DIV")},
                                } );
 
 // Helper function of isdigit to eliminate undefined behavior
@@ -112,10 +113,6 @@ Token Lexer::get_next_token() {
         case '*' :
             s.push_back(text[pos]);
             result = Token(MULT, s);
-            break;
-        case '/' :
-            s.push_back(text[pos]);
-            result = Token(DIVS, s);
             break;
         case '(' :
             s.push_back(text[pos]);
